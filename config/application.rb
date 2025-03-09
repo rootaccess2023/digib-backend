@@ -21,6 +21,9 @@ module MyAppBackend
     config.middleware.use ActionDispatch::Session::CookieStore
     config.middleware.use ActionDispatch::ContentSecurityPolicy::Middleware
     # Configuration for the application, engines, and railties goes here.
+
+    config.assets.paths << Gem.loaded_specs['arctic_admin'].full_gem_path + '/app/assets/stylesheets'
+    config.assets.paths << Gem.loaded_specs['arctic_admin'].full_gem_path + '/app/assets/javascripts'
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.

@@ -62,3 +62,6 @@ gem 'sprockets-rails'
 gem 'importmap-rails'  # For JavaScript handling in Rails 7
 gem 'turbo-rails'      # For Turbo Drive in Rails 7
 gem 'stimulus-rails'   # For Stimulus in Rails 7
+
+
+gem 'arctic_admin'
