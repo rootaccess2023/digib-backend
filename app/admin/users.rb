@@ -1,4 +1,3 @@
-# app/admin/users.rb
 ActiveAdmin.register User do
   # Permit these parameters for creating and updating users
   permit_params :email, :password, :password_confirmation
