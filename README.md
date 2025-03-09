@@ -9,6 +9,7 @@ A Ruby on Rails API with JWT authentication for secure user management.
 - Custom routes for signup, login, logout
 - Protected user data endpoint
 - CORS configuration for frontend access
+- Admin dashboard with ActiveAdmin
 
 ## Prerequisites
 
@@ -75,6 +76,40 @@ The API will be available at http://localhost:3001
 2. **Login**: Send a POST request to `/api/login` with credentials
 3. **Token Usage**: Store the token from the response and include it in future requests in the Authorization header
 4. **Logout**: Send a DELETE request to `/api/logout` with the token to invalidate it
+
+## Admin Interface
+
+This application includes an ActiveAdmin dashboard for administrative tasks:
+
+### Features
+
+- Secure admin authentication
+- User management interface
+- Dashboard with statistics and recent activity
+- Customizable admin panels
+
+### Access
+
+- Access the admin dashboard at `/admin`
+- Default admin credentials:
+  - Email: admin@example.com
+  - Password: password
+
+### Security
+
+For production deployment, make sure to:
+
+1. Change the default admin password
+2. Set up proper environment variables for Devise
+3. Configure secure HTTPS access
+
+### Customization
+
+The admin interface can be customized by editing:
+
+- `app/admin/dashboard.rb` - Main dashboard layout
+- `app/admin/users.rb` - User management interface
+- `config/initializers/active_admin.rb` - Global ActiveAdmin settings
 
 ## Development
 

@@ -1,7 +1,11 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :null_session
   include ActionController::Cookies
   
   def welcome
-    render json: { message: "Welcome to the API" }
+    respond_to do |format|
+      format.html
+      format.json { render json: { message: "Welcome to the API" } }
+    end
   end
 end
