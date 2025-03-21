@@ -1,6 +1,8 @@
 # app/controllers/api/auth_controller.rb
 module Api
-  class Api::AuthController < ApplicationController
+  class AuthController < BaseController
+    skip_before_action :verify_authenticity_token, if: :json_request?
+    
     def signup
       user = User.new(user_params)
       
@@ -36,28 +38,26 @@ module Api
     end
     
     def me
-      token = request.headers['Authorization']&.split(' ')&.last
-      if token.nil?
-        render json: { error: 'No token provided' }, status: :unauthorized
-        return
+      if authenticate_with_jwt
+        render json: current_user.as_json
       end
-      
-      begin
-        decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
-        user_id = decoded_token[0]['sub']
-        user = User.find(user_id)
-        render json: user
-      rescue JWT::DecodeError
-        render json: { error: 'Invalid token' }, status: :unauthorized
-      rescue ActiveRecord::RecordNotFound
-        render json: { error: 'User not found' }, status: :not_found
-      end
+    end
+    
+    def logout
+      # Your existing logout logic
+      render json: {
+        status: { code: 200, message: 'Logged out successfully.' }
+      }
     end
     
     private
     
     def user_params
       params.require(:user).permit(:email, :password, :password_confirmation)
+    end
+    
+    def json_request?
+      request.format.json?
     end
   end
 end

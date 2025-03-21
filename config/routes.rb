@@ -16,7 +16,13 @@ Rails.application.routes.draw do
     post '/login', to: 'auth#login'
     delete '/logout', to: 'auth#logout'
     get '/me', to: 'auth#me'
+    
+    # Admin routes
+    get '/admin/users', to: 'admin#users'
+    patch '/admin/users/:id/toggle_admin', to: 'admin#toggle_admin'
   end
+
+  
   
   # Root route
   root to: redirect('/admin/login')
