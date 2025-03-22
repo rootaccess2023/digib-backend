@@ -22,7 +22,7 @@ class User < ApplicationRecord
       sub: id,
       admin: admin,
       exp: 1.day.from_now.to_i
-    }, Rails.application.credentials.secret_key_base)
+    }, ENV['DEVISE_JWT_SECRET_KEY'])
   end
   
   # Return JSON-friendly user data

@@ -13,7 +13,7 @@ module Api
       end
       
       begin
-        decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+        decoded_token = JWT.decode(token, ENV['DEVISE_JWT_SECRET_KEY'], true, { algorithm: 'HS256' })
         user_id = decoded_token[0]['sub']
         @current_user = User.find(user_id)
         return true
