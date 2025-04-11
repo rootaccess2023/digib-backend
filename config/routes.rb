@@ -1,6 +1,5 @@
-# config/routes.rb
 Rails.application.routes.draw do
-  #Active Admin routes
+  # Active Admin routes
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -17,12 +16,16 @@ Rails.application.routes.draw do
     delete '/logout', to: 'auth#logout'
     get '/me', to: 'auth#me'
     
+    # User profile routes
+    patch '/users/update_profile', to: 'users#update_profile'
+    patch '/users/change_password', to: 'users#change_password'
+    
     # Admin routes
     get '/admin/users', to: 'admin#users'
+    get '/admin/users/:id', to: 'admin#show_user'
     patch '/admin/users/:id/toggle_admin', to: 'admin#toggle_admin'
+    get '/admin/dashboard/stats', to: 'admin#dashboard_stats'
   end
-
-  
   
   # Root route
   root to: redirect('/admin/login')
