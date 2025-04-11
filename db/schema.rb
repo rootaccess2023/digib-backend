@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_21_202749) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_09_214906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_21_202749) do
     t.index ["jti"], name: "index_jwt_blacklists_on_jti", unique: true
   end
 
+  create_table "residential_addresses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "house_number"
+    t.string "street_name"
+    t.string "purok"
+    t.string "barangay"
+    t.string "city"
+    t.string "province"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_residential_addresses_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -58,9 +71,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_21_202749) do
     t.datetime "updated_at", null: false
     t.string "jti", null: false
     t.boolean "admin"
+    t.string "first_name"
+    t.string "middle_name"
+    t.string "last_name"
+    t.string "name_extension"
+    t.date "date_of_birth"
+    t.string "gender"
+    t.string "civil_status"
+    t.string "mobile_phone"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "residential_addresses", "users"
 end

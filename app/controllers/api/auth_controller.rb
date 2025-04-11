@@ -5,6 +5,7 @@ module Api
     
     def signup
       user = User.new(user_params)
+      user.build_residential_address(residential_address_params)
       
       if user.save
         token = user.generate_jwt
@@ -53,7 +54,17 @@ module Api
     private
     
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.require(:user).permit(
+        :email, :password, :password_confirmation,
+        :first_name, :middle_name, :last_name, :name_extension,
+        :date_of_birth, :gender, :civil_status, :mobile_phone
+      )
+    end
+
+    def residential_address_params
+      params.require(:user).require(:residential_address).permit(
+        :house_number, :street_name, :purok, :barangay, :city, :province
+      )
     end
     
     def json_request?
