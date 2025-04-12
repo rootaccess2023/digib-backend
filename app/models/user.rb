@@ -6,6 +6,11 @@ class User < ApplicationRecord
   # Residential address association
   has_one :residential_address, dependent: :destroy
   accepts_nested_attributes_for :residential_address
+
+   # Clearance associations
+  has_many :barangay_clearances, dependent: :destroy
+  has_many :approved_clearances, class_name: 'BarangayClearance', foreign_key: 'approved_by_id'
+  has_many :rejected_clearances, class_name: 'BarangayClearance', foreign_key: 'rejected_by_id'
   
   # Validation for profile fields
   validates :first_name, presence: true
@@ -75,6 +80,11 @@ class User < ApplicationRecord
   # Check if user can verify accounts
   def can_verify_accounts?
     barangay_captain? || barangay_secretary?
+  end
+
+  # Check if user can process clearances
+  def can_process_clearances?
+    admin? || barangay_captain? || barangay_secretary?
   end
   
   # Return JSON-friendly user data

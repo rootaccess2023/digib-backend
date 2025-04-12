@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_11_093906) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_12_105539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,31 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_11_093906) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "barangay_clearances", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "purpose", null: false
+    t.string "status", default: "pending"
+    t.text "remarks"
+    t.string "reference_number"
+    t.decimal "fee_amount", precision: 8, scale: 2
+    t.boolean "fee_paid", default: false
+    t.string "government_id_type"
+    t.string "cedula_number"
+    t.date "cedula_issued_date"
+    t.string "cedula_issued_at"
+    t.bigint "approved_by_id"
+    t.datetime "approved_at"
+    t.bigint "rejected_by_id"
+    t.datetime "rejected_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approved_by_id"], name: "index_barangay_clearances_on_approved_by_id"
+    t.index ["reference_number"], name: "index_barangay_clearances_on_reference_number", unique: true
+    t.index ["rejected_by_id"], name: "index_barangay_clearances_on_rejected_by_id"
+    t.index ["status"], name: "index_barangay_clearances_on_status"
+    t.index ["user_id"], name: "index_barangay_clearances_on_user_id"
   end
 
   create_table "jwt_blacklists", force: :cascade do |t|
@@ -89,5 +114,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_11_093906) do
     t.index ["verified_by_id"], name: "index_users_on_verified_by_id"
   end
 
+  add_foreign_key "barangay_clearances", "users"
+  add_foreign_key "barangay_clearances", "users", column: "approved_by_id"
+  add_foreign_key "barangay_clearances", "users", column: "rejected_by_id"
   add_foreign_key "residential_addresses", "users"
 end
