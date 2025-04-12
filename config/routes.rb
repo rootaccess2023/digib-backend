@@ -25,6 +25,11 @@ Rails.application.routes.draw do
     get '/admin/users/:id', to: 'admin#show_user'
     patch '/admin/users/:id/toggle_admin', to: 'admin#toggle_admin'
     get '/admin/dashboard/stats', to: 'admin#dashboard_stats'
+    
+    # Barangay Admin routes
+    patch '/barangay/users/:id/assign_position', to: 'barangay_admin#assign_position'
+    patch '/barangay/users/:id/verify', to: 'barangay_admin#verify_user'
+    get '/barangay/pending_verifications', to: 'barangay_admin#pending_verifications'
   end
   
   # Root route

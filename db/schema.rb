@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_09_214906) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_11_093906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -79,9 +79,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_09_214906) do
     t.string "gender"
     t.string "civil_status"
     t.string "mobile_phone"
+    t.string "barangay_position"
+    t.string "verification_status", default: "unverified"
+    t.datetime "verified_at"
+    t.bigint "verified_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["verified_by_id"], name: "index_users_on_verified_by_id"
   end
 
   add_foreign_key "residential_addresses", "users"
