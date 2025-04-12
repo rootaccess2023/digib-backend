@@ -1,21 +1,38 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-# db/seeds.rb
-admin = User.find_or_initialize_by(email: 'admin@example.com')
-if admin.new_record?
-  admin.password = 'password'
-  admin.password_confirmation = 'password'
-  admin.admin = true
-  admin.save!
-  puts "Admin user created with email: admin@example.com and password: password"
+# Clear all existing user accounts
+puts "Deleting all existing user accounts..."
+User.destroy_all
+puts "All existing accounts have been deleted."
+
+# Create the main admin account
+admin = User.new(
+  email: 'admin@digib.com',
+  password: 'password',
+  password_confirmation: 'password',
+  admin: true,
+  first_name: 'System',
+  last_name: 'Administrator',
+  barangay_position: 'barangay_captain',  # Assign as Barangay Captain
+  verification_status: 'verified',
+  
+  # Add required fields
+  date_of_birth: '1980-01-01',  # Example birthdate
+  gender: 'male',               # Choose appropriate gender
+  civil_status: 'single',       # Choose appropriate civil status
+)
+
+# Create a residential address for the admin
+admin.build_residential_address(
+  barangay: 'Example Barangay',
+  city: 'Example City',
+  province: 'Example Province'
+)
+
+if admin.save
+  puts "Main admin account created successfully:"
+  puts "Email: admin@digib.com"
+  puts "Password: password"
+  puts "Role: Admin + Barangay Captain"
 else
-  admin.update(admin: true) unless admin.admin
-  puts "Admin user already exists, ensured admin status"
+  puts "Failed to create admin account:"
+  puts admin.errors.full_messages
 end
