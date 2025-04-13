@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_12_105539) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_13_075429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,30 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_12_105539) do
     t.index ["user_id"], name: "index_barangay_clearances_on_user_id"
   end
 
+  create_table "document_requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "document_type", null: false
+    t.string "purpose", null: false
+    t.string "status", default: "pending"
+    t.text "remarks"
+    t.string "reference_number"
+    t.decimal "fee_amount", precision: 8, scale: 2
+    t.boolean "fee_paid", default: false
+    t.jsonb "document_data"
+    t.bigint "approved_by_id"
+    t.datetime "approved_at"
+    t.bigint "rejected_by_id"
+    t.datetime "rejected_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approved_by_id"], name: "index_document_requests_on_approved_by_id"
+    t.index ["document_type"], name: "index_document_requests_on_document_type"
+    t.index ["reference_number"], name: "index_document_requests_on_reference_number", unique: true
+    t.index ["rejected_by_id"], name: "index_document_requests_on_rejected_by_id"
+    t.index ["status"], name: "index_document_requests_on_status"
+    t.index ["user_id"], name: "index_document_requests_on_user_id"
+  end
+
   create_table "jwt_blacklists", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
@@ -117,5 +141,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_12_105539) do
   add_foreign_key "barangay_clearances", "users"
   add_foreign_key "barangay_clearances", "users", column: "approved_by_id"
   add_foreign_key "barangay_clearances", "users", column: "rejected_by_id"
+  add_foreign_key "document_requests", "users"
+  add_foreign_key "document_requests", "users", column: "approved_by_id"
+  add_foreign_key "document_requests", "users", column: "rejected_by_id"
   add_foreign_key "residential_addresses", "users"
 end

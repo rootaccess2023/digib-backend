@@ -40,6 +40,18 @@ Rails.application.routes.draw do
         patch 'status', to: 'clearances#update_status'
       end
     end
+    
+    resources :document_requests, except: [:update_status] do
+    collection do
+      get 'all', to: 'document_requests#index_all'
+    end
+    member do
+      patch 'status', to: 'document_requests#update_status'
+    end
+  end
+
+    
+
   end
   
   # Root route
