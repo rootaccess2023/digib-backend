@@ -31,16 +31,6 @@ Rails.application.routes.draw do
     patch '/barangay/users/:id/verify', to: 'barangay_admin#verify_user'
     get '/barangay/pending_verifications', to: 'barangay_admin#pending_verifications'
     
-    # Barangay Clearance routes
-    resources :clearances, except: [:update_status] do
-      collection do
-        get 'all', to: 'clearances#index_all'
-      end
-      member do
-        patch 'status', to: 'clearances#update_status'
-      end
-    end
-    
     resources :document_requests, except: [:update_status] do
     collection do
       get 'all', to: 'document_requests#index_all'

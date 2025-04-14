@@ -1,5 +1,16 @@
-class CreateBarangayClearances < ActiveRecord::Migration[7.1]
-  def change
+class DropBarangayClearancesTable < ActiveRecord::Migration[7.1]
+  def up
+    # First remove foreign key constraints
+    remove_foreign_key :barangay_clearances, column: :approved_by_id
+    remove_foreign_key :barangay_clearances, column: :rejected_by_id
+    remove_foreign_key :barangay_clearances, column: :user_id
+    
+    # Then drop the table
+    drop_table :barangay_clearances
+  end
+
+  def down
+    # Re-create the table if you need to roll back this migration
     create_table :barangay_clearances do |t|
       t.references :user, null: false, foreign_key: true
       t.string :purpose, null: false
