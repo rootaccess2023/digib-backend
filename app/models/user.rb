@@ -7,10 +7,6 @@ class User < ApplicationRecord
   has_one :residential_address, dependent: :destroy
   accepts_nested_attributes_for :residential_address
 
-   # Clearance associations
-  has_many :barangay_clearances, dependent: :destroy
-  has_many :approved_clearances, class_name: 'BarangayClearance', foreign_key: 'approved_by_id'
-  has_many :rejected_clearances, class_name: 'BarangayClearance', foreign_key: 'rejected_by_id'
   has_many :document_requests
 
   # Validation for profile fields
